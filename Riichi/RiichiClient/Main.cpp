@@ -5,7 +5,7 @@
 #define OLC_PGE_APPLICATION
 #include "olcPixelGameEngine.h"
 
-#define TIME_LOADING_IMAGES // Turn on to record and display times via stdout for testing image loading.
+// #define TIME_LOADING_IMAGES // Turn on to record and display times via stdout for testing image loading.
 
 class Example : public olc::PixelGameEngine
 {
