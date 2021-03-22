@@ -9,13 +9,13 @@
 
 // #define MAHJONG_DEBUG // Turn on to view debug messages sent via stdout.
 
-class RiichiGame : public olc::PixelGameEngine
+class RiichiClient : public olc::PixelGameEngine
 {
 public:
-	RiichiGame()
+	RiichiClient()
 	{
 		// Name your application
-		sAppName = "Royale with cheese";
+		sAppName = "Riichi Client";
 	}
 
 private:
@@ -148,7 +148,7 @@ public:
 	}
 };
 
-std::string RiichiGame::TILE_FILENAME[38] = { // Source files are based on eastern names.
+std::string RiichiClient::TILE_FILENAME[38] = { // Source files are based on eastern names.
 		"Pin1.png", "Pin2.png", "Pin3.png", "Pin4.png", "Pin5.png", "Pin5-Dora.png", "Pin6.png", "Pin7.png", "Pin8.png", "Pin9.png",
 		"Sou1.png", "Sou2.png", "Sou3.png", "Sou4.png", "Sou5.png", "Sou5-Dora.png", "Sou6.png", "Sou7.png", "Sou8.png", "Sou9.png",
 		"Man1.png", "Man2.png", "Man3.png", "Man4.png", "Man5.png", "Man5-Dora.png", "Man6.png", "Man7.png", "Man8.png", "Man9.png",
@@ -157,11 +157,11 @@ std::string RiichiGame::TILE_FILENAME[38] = { // Source files are based on easte
 		"Blank.png"
 };
 
-std::string RiichiGame::TILE_IMAGE_URL_BASE_FORMAT = "./%s/%s";
+std::string RiichiClient::TILE_IMAGE_URL_BASE_FORMAT = "./%s/%s";
 
 int main()
 {
-	RiichiGame demo;
+	RiichiClient demo;
 	if (demo.Construct(1280, 720, 1, 1, false, true))
 	{
 #ifndef MAHJONG_DEBUG
