@@ -13,6 +13,15 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Resource Files\Tile">
+      <UniqueIdentifier>{a85eecd1-0252-4937-81aa-e2a1ca2d4435}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Tile\Regular">
+      <UniqueIdentifier>{2ee49865-d226-4029-9ba5-d02d34178e3f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Tile\Dark">
+      <UniqueIdentifier>{08e5c9eb-5185-4c8a-90ca-ac6e8cd37f38}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="olcPixelGameEngine.h">
@@ -23,5 +32,247 @@
     <ClCompile Include="Main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="Black\Back.png">
+      <Filter>Resource Files\Tile\Dark</Filter>
+    </Image>
+    <Image Include="Black\Blank.png">
+      <Filter>Resource Files\Tile\Dark</Filter>
+    </Image>
+    <Image Include="Black\Chun.png">
+      <Filter>Resource Files\Tile\Dark</Filter>
+    </Image>
+    <Image Include="Black\Front.png">
+      <Filter>Resource Files\Tile\Dark</Filter>
+    </Image>
+    <Image Include="Black\Haku.png">
+      <Filter>Resource Files\Tile\Dark</Filter>
+    </Image>
+    <Image Include="Black\Hatsu.png">
+      <Filter>Resource Files\Tile\Dark</Filter>
+    </Image>
+    <Image Include="Black\Man1.png">
+      <Filter>Resource Files\Tile\Dark</Filter>
+    </Image>
+    <Image Include="Black\Man2.png">
+      <Filter>Resource Files\Tile\Dark</Filter>
+    </Image>
+    <Image Include="Black\Man3.png">
+      <Filter>Resource Files\Tile\Dark</Filter>
+    </Image>
+    <Image Include="Black\Man4.png">
+      <Filter>Resource Files\Tile\Dark</Filter>
+    </Image>
+    <Image Include="Black\Man5.png">
+      <Filter>Resource Files\Tile\Dark</Filter>
+    </Image>
+    <Image Include="Black\Man5-Dora.png">
+      <Filter>Resource Files\Tile\Dark</Filter>
+    </Image>
+    <Image Include="Black\Man6.png">
+      <Filter>Resource Files\Tile\Dark</Filter>
+    </Image>
+    <Image Include="Black\Man7.png">
+      <Filter>Resource Files\Tile\Dark</Filter>
+    </Image>
+    <Image Include="Black\Man8.png">
+      <Filter>Resource Files\Tile\Dark</Filter>
+    </Image>
+    <Image Include="Black\Man9.png">
+      <Filter>Resource Files\Tile\Dark</Filter>
+    </Image>
+    <Image Include="Black\Nan.png">
+      <Filter>Resource Files\Tile\Dark</Filter>
+    </Image>
+    <Image Include="Black\Pei.png">
+      <Filter>Resource Files\Tile\Dark</Filter>
+    </Image>
+    <Image Include="Black\Pin1.png">
+      <Filter>Resource Files\Tile\Dark</Filter>
+    </Image>
+    <Image Include="Black\Pin2.png">
+      <Filter>Resource Files\Tile\Dark</Filter>
+    </Image>
+    <Image Include="Black\Pin3.png">
+      <Filter>Resource Files\Tile\Dark</Filter>
+    </Image>
+    <Image Include="Black\Pin4.png">
+      <Filter>Resource Files\Tile\Dark</Filter>
+    </Image>
+    <Image Include="Black\Pin5.png">
+      <Filter>Resource Files\Tile\Dark</Filter>
+    </Image>
+    <Image Include="Black\Pin5-Dora.png">
+      <Filter>Resource Files\Tile\Dark</Filter>
+    </Image>
+    <Image Include="Black\Pin6.png">
+      <Filter>Resource Files\Tile\Dark</Filter>
+    </Image>
+    <Image Include="Black\Pin7.png">
+      <Filter>Resource Files\Tile\Dark</Filter>
+    </Image>
+    <Image Include="Black\Pin8.png">
+      <Filter>Resource Files\Tile\Dark</Filter>
+    </Image>
+    <Image Include="Black\Pin9.png">
+      <Filter>Resource Files\Tile\Dark</Filter>
+    </Image>
+    <Image Include="Black\Shaa.png">
+      <Filter>Resource Files\Tile\Dark</Filter>
+    </Image>
+    <Image Include="Black\Sou1.png">
+      <Filter>Resource Files\Tile\Dark</Filter>
+    </Image>
+    <Image Include="Black\Sou2.png">
+      <Filter>Resource Files\Tile\Dark</Filter>
+    </Image>
+    <Image Include="Black\Sou3.png">
+      <Filter>Resource Files\Tile\Dark</Filter>
+    </Image>
+    <Image Include="Black\Sou4.png">
+      <Filter>Resource Files\Tile\Dark</Filter>
+    </Image>
+    <Image Include="Black\Sou5.png">
+      <Filter>Resource Files\Tile\Dark</Filter>
+    </Image>
+    <Image Include="Black\Sou5-Dora.png">
+      <Filter>Resource Files\Tile\Dark</Filter>
+    </Image>
+    <Image Include="Black\Sou6.png">
+      <Filter>Resource Files\Tile\Dark</Filter>
+    </Image>
+    <Image Include="Black\Sou7.png">
+      <Filter>Resource Files\Tile\Dark</Filter>
+    </Image>
+    <Image Include="Black\Sou8.png">
+      <Filter>Resource Files\Tile\Dark</Filter>
+    </Image>
+    <Image Include="Black\Sou9.png">
+      <Filter>Resource Files\Tile\Dark</Filter>
+    </Image>
+    <Image Include="Black\Ton.png">
+      <Filter>Resource Files\Tile\Dark</Filter>
+    </Image>
+    <Image Include="Regular\Back.png">
+      <Filter>Resource Files\Tile\Regular</Filter>
+    </Image>
+    <Image Include="Regular\Blank.png">
+      <Filter>Resource Files\Tile\Regular</Filter>
+    </Image>
+    <Image Include="Regular\Chun.png">
+      <Filter>Resource Files\Tile\Regular</Filter>
+    </Image>
+    <Image Include="Regular\Front.png">
+      <Filter>Resource Files\Tile\Regular</Filter>
+    </Image>
+    <Image Include="Regular\Haku.png">
+      <Filter>Resource Files\Tile\Regular</Filter>
+    </Image>
+    <Image Include="Regular\Hatsu.png">
+      <Filter>Resource Files\Tile\Regular</Filter>
+    </Image>
+    <Image Include="Regular\Man1.png">
+      <Filter>Resource Files\Tile\Regular</Filter>
+    </Image>
+    <Image Include="Regular\Man2.png">
+      <Filter>Resource Files\Tile\Regular</Filter>
+    </Image>
+    <Image Include="Regular\Man3.png">
+      <Filter>Resource Files\Tile\Regular</Filter>
+    </Image>
+    <Image Include="Regular\Man4.png">
+      <Filter>Resource Files\Tile\Regular</Filter>
+    </Image>
+    <Image Include="Regular\Man5.png">
+      <Filter>Resource Files\Tile\Regular</Filter>
+    </Image>
+    <Image Include="Regular\Man5-Dora.png">
+      <Filter>Resource Files\Tile\Regular</Filter>
+    </Image>
+    <Image Include="Regular\Man6.png">
+      <Filter>Resource Files\Tile\Regular</Filter>
+    </Image>
+    <Image Include="Regular\Man7.png">
+      <Filter>Resource Files\Tile\Regular</Filter>
+    </Image>
+    <Image Include="Regular\Man8.png">
+      <Filter>Resource Files\Tile\Regular</Filter>
+    </Image>
+    <Image Include="Regular\Man9.png">
+      <Filter>Resource Files\Tile\Regular</Filter>
+    </Image>
+    <Image Include="Regular\Nan.png">
+      <Filter>Resource Files\Tile\Regular</Filter>
+    </Image>
+    <Image Include="Regular\Pei.png">
+      <Filter>Resource Files\Tile\Regular</Filter>
+    </Image>
+    <Image Include="Regular\Pin1.png">
+      <Filter>Resource Files\Tile\Regular</Filter>
+    </Image>
+    <Image Include="Regular\Pin2.png">
+      <Filter>Resource Files\Tile\Regular</Filter>
+    </Image>
+    <Image Include="Regular\Pin3.png">
+      <Filter>Resource Files\Tile\Regular</Filter>
+    </Image>
+    <Image Include="Regular\Pin4.png">
+      <Filter>Resource Files\Tile\Regular</Filter>
+    </Image>
+    <Image Include="Regular\Pin5.png">
+      <Filter>Resource Files\Tile\Regular</Filter>
+    </Image>
+    <Image Include="Regular\Pin5-Dora.png">
+      <Filter>Resource Files\Tile\Regular</Filter>
+    </Image>
+    <Image Include="Regular\Pin6.png">
+      <Filter>Resource Files\Tile\Regular</Filter>
+    </Image>
+    <Image Include="Regular\Pin7.png">
+      <Filter>Resource Files\Tile\Regular</Filter>
+    </Image>
+    <Image Include="Regular\Pin8.png">
+      <Filter>Resource Files\Tile\Regular</Filter>
+    </Image>
+    <Image Include="Regular\Pin9.png">
+      <Filter>Resource Files\Tile\Regular</Filter>
+    </Image>
+    <Image Include="Regular\Shaa.png">
+      <Filter>Resource Files\Tile\Regular</Filter>
+    </Image>
+    <Image Include="Regular\Sou1.png">
+      <Filter>Resource Files\Tile\Regular</Filter>
+    </Image>
+    <Image Include="Regular\Sou2.png">
+      <Filter>Resource Files\Tile\Regular</Filter>
+    </Image>
+    <Image Include="Regular\Sou3.png">
+      <Filter>Resource Files\Tile\Regular</Filter>
+    </Image>
+    <Image Include="Regular\Sou4.png">
+      <Filter>Resource Files\Tile\Regular</Filter>
+    </Image>
+    <Image Include="Regular\Sou5.png">
+      <Filter>Resource Files\Tile\Regular</Filter>
+    </Image>
+    <Image Include="Regular\Sou5-Dora.png">
+      <Filter>Resource Files\Tile\Regular</Filter>
+    </Image>
+    <Image Include="Regular\Sou6.png">
+      <Filter>Resource Files\Tile\Regular</Filter>
+    </Image>
+    <Image Include="Regular\Sou7.png">
+      <Filter>Resource Files\Tile\Regular</Filter>
+    </Image>
+    <Image Include="Regular\Sou8.png">
+      <Filter>Resource Files\Tile\Regular</Filter>
+    </Image>
+    <Image Include="Regular\Sou9.png">
+      <Filter>Resource Files\Tile\Regular</Filter>
+    </Image>
+    <Image Include="Regular\Ton.png">
+      <Filter>Resource Files\Tile\Regular</Filter>
+    </Image>
   </ItemGroup>
 </Project>
