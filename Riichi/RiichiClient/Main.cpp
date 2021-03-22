@@ -7,6 +7,8 @@
 
 // #define TIME_LOADING_IMAGES // Turn on to record and display times via stdout for testing image loading.
 
+// #define MAHJONG_DEBUG // Turn on to view debug messages sent via stdout.
+
 class Example : public olc::PixelGameEngine
 {
 public:
@@ -163,7 +165,11 @@ int main()
 {
 	Example demo;
 	if (demo.Construct(1280, 720, 1, 1, false, true))
+	{
+#ifndef MAHJONG_DEBUG
+		ShowWindow(GetConsoleWindow(), 0);
+#endif
 		demo.Start();
-
+	}
 	return 0;
 }
