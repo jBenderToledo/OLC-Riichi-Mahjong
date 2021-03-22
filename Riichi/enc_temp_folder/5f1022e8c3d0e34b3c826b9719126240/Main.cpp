@@ -33,19 +33,18 @@ private:
 		olc::Decal* base, * face;
 	};
 
-	typedef struct Tile
+	typedef struct TileDrawable
 	{
-		TileIndex ID;
 		TileImage image;
 	};
 
-	Tile BlackTiles[39];
-	Tile RegularTiles[39];
+	TileDrawable BlackTiles[39];
+	TileDrawable RegularTiles[39];
 	
 	float TileScale;
 	int FrameCounter;
 
-	Tile* t;
+	TileDrawable* t;
 
 	void MakeTiles_PARALLELIZED()
 	{
