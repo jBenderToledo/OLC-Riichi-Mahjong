@@ -38,12 +38,12 @@ private:
 		TileImage image;
 	};
 
-	Tile BLACK_TILES[39];
-	Tile REGULAR_TILES[39];
-	float tileScale;
+	Tile BlackTiles[39];
+	Tile RegularTiles[39];
+	
+	float TileScale;
+	int FrameCounter;
 
-	int frameCounter;
-	int tileCounter;
 	Tile* t;
 
 	void MakeTiles_PARALLELIZED()
@@ -69,11 +69,11 @@ private:
 #pragma omp parallel for
 		for (int i = 0; i < 38; i++)
 		{
-			BLACK_TILES[i].image.base = BASE_BLACK_DECAL;
-			REGULAR_TILES[i].image.base = BASE_REGULAR_DECAL;
+			BlackTiles[i].image.base = BASE_BLACK_DECAL;
+			RegularTiles[i].image.base = BASE_REGULAR_DECAL;
 
-			BLACK_TILES[i].image.face = new olc::Decal(new olc::Sprite(BLACK_PATH + TILE_FILENAME[i]));
-			REGULAR_TILES[i].image.face = new olc::Decal(new olc::Sprite(REGULAR_PATH + TILE_FILENAME[i]));
+			BlackTiles[i].image.face = new olc::Decal(new olc::Sprite(BLACK_PATH + TILE_FILENAME[i]));
+			RegularTiles[i].image.face = new olc::Decal(new olc::Sprite(REGULAR_PATH + TILE_FILENAME[i]));
 		}
 
 #ifdef TIME_LOADING_IMAGES
@@ -99,11 +99,11 @@ private:
 
 		for (int i = 0; i < 38; i++)
 		{
-			BLACK_TILES[i].image.base = BASE_BLACK_DECAL;
-			REGULAR_TILES[i].image.base = BASE_REGULAR_DECAL;
+			BlackTiles[i].image.base = BASE_BLACK_DECAL;
+			RegularTiles[i].image.base = BASE_REGULAR_DECAL;
 
-			BLACK_TILES[i].image.face = new olc::Decal(new olc::Sprite(BLACK_PATH + TILE_FILENAME[i]));
-			REGULAR_TILES[i].image.face = new olc::Decal(new olc::Sprite(REGULAR_PATH + TILE_FILENAME[i]));
+			BlackTiles[i].image.face = new olc::Decal(new olc::Sprite(BLACK_PATH + TILE_FILENAME[i]));
+			RegularTiles[i].image.face = new olc::Decal(new olc::Sprite(REGULAR_PATH + TILE_FILENAME[i]));
 		}
 	}
 
@@ -113,9 +113,8 @@ public:
 	{
 		// Called once at the start, so create things here
 
-		tileScale = 1.0;
-		frameCounter = 0;
-		tileCounter = 0;
+		TileScale = 1.0;
+		FrameCounter = 15;
 
 		// MakeTiles_PROCEDURAL();
 		MakeTiles_PARALLELIZED();
@@ -125,26 +124,24 @@ public:
 
 	bool OnUserUpdate(float fElapsedTime) override
 	{
-		frameCounter++;
+		int randIndex;
 
-		while (frameCounter >= 15)
+		FrameCounter++;
+		while (FrameCounter >= 15)
 		{
-			frameCounter -= 15;
-			tileCounter++;
+			FrameCounter -= 15;
+			randIndex = rand() % 74;
+			t = (randIndex & 1) ? &BlackTiles[randIndex >> 1] : &RegularTiles[randIndex >> 1];
 		}
 
-		while (tileCounter >= 37)
-		{
-			tileCounter -= 37;
-		}
-		t = &REGULAR_TILES[tileCounter];
+
 
 		Clear(olc::VERY_DARK_BLUE);
 
 		olc::vf2d mouse = { float(GetMouseX()), float(GetMouseY()) };
 
-		DrawDecal(mouse, t->image.base, { tileScale,tileScale });
-		DrawDecal(mouse, t->image.face, { tileScale,tileScale });
+		DrawDecal(mouse, t->image.base, { TileScale,TileScale });
+		DrawDecal(mouse, t->image.face, { TileScale,TileScale });
 
 		return true;
 	}
