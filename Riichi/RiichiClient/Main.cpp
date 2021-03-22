@@ -1,3 +1,5 @@
+
+// NOTE: WILL BREAK IN DEBUG MODE FOR SEMI-OBVIOUS REASONS.
 #include <omp.h>
 
 #define OLC_PGE_APPLICATION
@@ -51,34 +53,23 @@ private:
 
 		static std::string BLACK_PATH = "./Black/";
 		static std::string REGULAR_PATH = "./Regular/";
-#ifdef TIME_LOADING_IMAGES
-		clock_t start[38], end[38], allstart, allend;
-#endif
 
 #ifdef TIME_LOADING_IMAGES
+		clock_t allstart, allend;
+
 		allstart = clock();
 #endif
 
 		// Figure out how to parallelize
 
-#pragma omp parallel for schedule
+#pragma omp parallel for
 		for (int i = 0; i < 38; i++)
 		{
 			BLACK_TILES[i].image.base = BASE_BLACK_DECAL;
 			REGULAR_TILES[i].image.base = BASE_REGULAR_DECAL;
 
-#ifdef TIME_LOADING_IMAGES
-			start[i] = clock();
-#endif 
-
 			BLACK_TILES[i].image.face = new olc::Decal(new olc::Sprite(BLACK_PATH + TILE_FILENAME[i]));
 			REGULAR_TILES[i].image.face = new olc::Decal(new olc::Sprite(REGULAR_PATH + TILE_FILENAME[i]));
-
-#ifdef TIME_LOADING_IMAGES
-			end[i] = clock();
-
-			std::cout << "Time to load 2x" << TILE_FILENAME[i] << ":\t" << (end[i] - start[i]) / (float)CLOCKS_PER_SEC << "s\n";
-#endif
 		}
 
 #ifdef TIME_LOADING_IMAGES
@@ -120,7 +111,8 @@ public:
 
 		tileScale = 1.0;
 
-		MakeTiles_PROCEDURAL();
+		// MakeTiles_PROCEDURAL();
+		MakeTiles_PARALLELIZED();
 
 		return true;
 	}
