@@ -42,6 +42,10 @@ private:
 	Tile REGULAR_TILES[39];
 	float tileScale;
 
+	int frameCounter;
+	int tileCounter;
+	Tile* t;
+
 	void MakeTiles_PARALLELIZED()
 	{
 		static std::string BASE_BLACK_FILENAME = "./Black/Front.png";
@@ -110,6 +114,8 @@ public:
 		// Called once at the start, so create things here
 
 		tileScale = 1.0;
+		frameCounter = 0;
+		tileCounter = 0;
 
 		// MakeTiles_PROCEDURAL();
 		MakeTiles_PARALLELIZED();
@@ -119,14 +125,26 @@ public:
 
 	bool OnUserUpdate(float fElapsedTime) override
 	{
-		Tile& t = REGULAR_TILES[(int) TileIndex::GREEN];
+		frameCounter++;
+
+		while (frameCounter >= 15)
+		{
+			frameCounter -= 15;
+			tileCounter++;
+		}
+
+		while (tileCounter >= 37)
+		{
+			tileCounter -= 37;
+		}
+		t = &REGULAR_TILES[tileCounter];
 
 		Clear(olc::VERY_DARK_BLUE);
 
 		olc::vf2d mouse = { float(GetMouseX()), float(GetMouseY()) };
 
-		DrawDecal(mouse, t.image.base, { tileScale,tileScale });
-		DrawDecal(mouse, t.image.face, { tileScale,tileScale });
+		DrawDecal(mouse, t->image.base, { tileScale,tileScale });
+		DrawDecal(mouse, t->image.face, { tileScale,tileScale });
 
 		return true;
 	}
@@ -146,7 +164,7 @@ std::string Example::TILE_IMAGE_URL_BASE_FORMAT = "./%s/%s";
 int main()
 {
 	Example demo;
-	if (demo.Construct(1280, 720, 1, 1, false, false))
+	if (demo.Construct(1280, 720, 1, 1, false, true))
 		demo.Start();
 
 	return 0;
