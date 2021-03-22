@@ -9,13 +9,13 @@
 
 // #define MAHJONG_DEBUG // Turn on to view debug messages sent via stdout.
 
-class Example : public olc::PixelGameEngine
+class RiichiGame : public olc::PixelGameEngine
 {
 public:
-	Example()
+	RiichiGame()
 	{
 		// Name your application
-		sAppName = "Example";
+		sAppName = "Royale with cheese";
 	}
 
 private:
@@ -32,13 +32,13 @@ private:
 
 	typedef struct TileImage
 	{
-		olc::Decal* base, * face;
+		olc::Decal* Base, * Face;
 	};
 
 	typedef struct Tile
 	{
 		TileIndex ID;
-		TileImage image;
+		TileImage Image;
 	};
 
 	Tile BlackTiles[39];
@@ -47,7 +47,7 @@ private:
 	float TileScale;
 	int FrameCounter;
 
-	Tile* t;
+	Tile* TilePtr;
 
 	void MakeTiles_PARALLELIZED()
 	{
@@ -72,11 +72,11 @@ private:
 #pragma omp parallel for
 		for (int i = 0; i < 38; i++)
 		{
-			BlackTiles[i].image.base = BASE_BLACK_DECAL;
-			RegularTiles[i].image.base = BASE_REGULAR_DECAL;
+			BlackTiles[i].Image.Base = BASE_BLACK_DECAL;
+			RegularTiles[i].Image.Base = BASE_REGULAR_DECAL;
 
-			BlackTiles[i].image.face = new olc::Decal(new olc::Sprite(BLACK_PATH + TILE_FILENAME[i]));
-			RegularTiles[i].image.face = new olc::Decal(new olc::Sprite(REGULAR_PATH + TILE_FILENAME[i]));
+			BlackTiles[i].Image.Face = new olc::Decal(new olc::Sprite(BLACK_PATH + TILE_FILENAME[i]));
+			RegularTiles[i].Image.Face = new olc::Decal(new olc::Sprite(REGULAR_PATH + TILE_FILENAME[i]));
 		}
 
 #ifdef TIME_LOADING_IMAGES
@@ -102,11 +102,11 @@ private:
 
 		for (int i = 0; i < 38; i++)
 		{
-			BlackTiles[i].image.base = BASE_BLACK_DECAL;
-			RegularTiles[i].image.base = BASE_REGULAR_DECAL;
+			BlackTiles[i].Image.Base = BASE_BLACK_DECAL;
+			RegularTiles[i].Image.Base = BASE_REGULAR_DECAL;
 
-			BlackTiles[i].image.face = new olc::Decal(new olc::Sprite(BLACK_PATH + TILE_FILENAME[i]));
-			RegularTiles[i].image.face = new olc::Decal(new olc::Sprite(REGULAR_PATH + TILE_FILENAME[i]));
+			BlackTiles[i].Image.Face = new olc::Decal(new olc::Sprite(BLACK_PATH + TILE_FILENAME[i]));
+			RegularTiles[i].Image.Face = new olc::Decal(new olc::Sprite(REGULAR_PATH + TILE_FILENAME[i]));
 		}
 	}
 
@@ -134,23 +134,21 @@ public:
 		{
 			FrameCounter -= 15;
 			randIndex = rand() % 74;
-			t = (randIndex & 1) ? &BlackTiles[randIndex >> 1] : &RegularTiles[randIndex >> 1];
+			TilePtr = (randIndex & 1) ? &BlackTiles[randIndex >> 1] : &RegularTiles[randIndex >> 1];
 		}
-
-
 
 		Clear(olc::VERY_DARK_BLUE);
 
 		olc::vf2d mouse = { float(GetMouseX()), float(GetMouseY()) };
 
-		DrawDecal(mouse, t->image.base, { TileScale,TileScale });
-		DrawDecal(mouse, t->image.face, { TileScale,TileScale });
+		DrawDecal(mouse, TilePtr->Image.Base, { TileScale,TileScale });
+		DrawDecal(mouse, TilePtr->Image.Face, { TileScale,TileScale });
 
 		return true;
 	}
 };
 
-std::string Example::TILE_FILENAME[38] = { // Source files are based on eastern names.
+std::string RiichiGame::TILE_FILENAME[38] = { // Source files are based on eastern names.
 		"Pin1.png", "Pin2.png", "Pin3.png", "Pin4.png", "Pin5.png", "Pin5-Dora.png", "Pin6.png", "Pin7.png", "Pin8.png", "Pin9.png",
 		"Sou1.png", "Sou2.png", "Sou3.png", "Sou4.png", "Sou5.png", "Sou5-Dora.png", "Sou6.png", "Sou7.png", "Sou8.png", "Sou9.png",
 		"Man1.png", "Man2.png", "Man3.png", "Man4.png", "Man5.png", "Man5-Dora.png", "Man6.png", "Man7.png", "Man8.png", "Man9.png",
@@ -159,11 +157,11 @@ std::string Example::TILE_FILENAME[38] = { // Source files are based on eastern 
 		"Blank.png"
 };
 
-std::string Example::TILE_IMAGE_URL_BASE_FORMAT = "./%s/%s";
+std::string RiichiGame::TILE_IMAGE_URL_BASE_FORMAT = "./%s/%s";
 
 int main()
 {
-	Example demo;
+	RiichiGame demo;
 	if (demo.Construct(1280, 720, 1, 1, false, true))
 	{
 #ifndef MAHJONG_DEBUG
