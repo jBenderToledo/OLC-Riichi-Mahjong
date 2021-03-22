@@ -55,9 +55,6 @@ private:
 		clock_t start[38], end[38], allstart, allend;
 #endif
 
-		std::string baseBlackPath = BASE_BLACK_FILENAME;
-		std::string baseRegularPath = BASE_REGULAR_FILENAME;
-
 #ifdef TIME_LOADING_IMAGES
 		allstart = clock();
 #endif
@@ -102,9 +99,6 @@ private:
 
 		static std::string BLACK_PATH = "./Black/";
 		static std::string REGULAR_PATH = "./Regular/";
-
-		std::string baseBlackPath = BASE_BLACK_FILENAME;
-		std::string baseRegularPath = BASE_REGULAR_FILENAME;
 
 		// Figure out how to parallelize
 
