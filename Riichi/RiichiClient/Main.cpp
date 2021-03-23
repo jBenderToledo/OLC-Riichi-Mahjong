@@ -53,7 +53,9 @@ private:
 	
 	// Variables that are just here for an example and will probably be removed between versions.
 	float TileScale;
+	float FaceScale;
 	int FrameCounter;
+	TileModel* TileModelPtr;
 
 	void MakeTiles_PARALLEL()
 	{
@@ -131,12 +133,37 @@ public:
 		// MakeTiles_PROCEDURAL();
 		MakeTiles_PARALLEL();
 
+		FaceScale = 0.9;
+
 		return true;
 	}
 
 	bool OnUserUpdate(float fElapsedTime) override
 	{
+		int randIndex;
 
+		FrameCounter++;
+		while (FrameCounter >= 15)
+		{
+			FrameCounter -= 15;
+			randIndex = rand() % 74;
+			TileModelPtr = (randIndex & 1) ? &BlackTiles[randIndex >> 1] : &RegularTiles[randIndex >> 1];
+		}
+
+		Clear(olc::VERY_DARK_BLUE);
+
+		float w, w0, w1, h, h0, h1, dw_center, dh_center;
+		w = TileModelPtr->Image.Face->sprite->width;
+		h = TileModelPtr->Image.Face->sprite->height;
+		w0 = w * TileScale; h0 = h * TileScale;
+		w1 = w0 * FaceScale; h1 = h0 * FaceScale;
+		dw_center = 0.5*(w0 - w1); dh_center = 0.5*(h0 - h1);
+
+		olc::vf2d mouse = { float(GetMouseX()), float(GetMouseY()) };
+		olc::vf2d tileOffset = { dw_center, dh_center };
+
+		DrawDecal(mouse, TileModelPtr->Image.Base, { TileScale,TileScale });
+		DrawDecal(mouse + tileOffset, TileModelPtr->Image.Face, { FaceScale * TileScale, FaceScale * TileScale });
 
 		return true;
 	}
