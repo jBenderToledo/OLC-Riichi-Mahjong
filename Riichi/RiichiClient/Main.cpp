@@ -121,6 +121,18 @@ private:
 		}
 	}
 
+	void DrawTileDecal(TileModel* DrawableTile, olc::vf2d position)
+	{
+		DrawDecal(position, DrawableTile->Image.Base, { TileScale,TileScale });
+
+		float dw_center, dh_center;
+		dw_center = 0.5 * DrawableTile->Image.Face->sprite->width * TileScale * (1 - FaceScale);
+		dh_center = 0.5 * DrawableTile->Image.Face->sprite->width * TileScale * (1 - FaceScale);
+		olc::vf2d tileOffset = { dw_center, dh_center };
+
+		DrawDecal(position + tileOffset, DrawableTile->Image.Face, { FaceScale * TileScale, FaceScale * TileScale });
+	}
+
 public:
 
 	bool OnUserCreate() override
@@ -152,15 +164,9 @@ public:
 
 		Clear(olc::VERY_DARK_BLUE);
 
-		float dw_center, dh_center;
-		dw_center = 0.5 * TileModelPtr->Image.Face->sprite->width * TileScale * (1 - FaceScale);
-		dh_center = 0.5 * TileModelPtr->Image.Face->sprite->width * TileScale * (1 - FaceScale);
-
 		olc::vf2d mouse = { float(GetMouseX()), float(GetMouseY()) };
-		olc::vf2d tileOffset = { dw_center, dh_center };
 
-		DrawDecal(mouse, TileModelPtr->Image.Base, { TileScale,TileScale });
-		DrawDecal(mouse + tileOffset, TileModelPtr->Image.Face, { FaceScale * TileScale, FaceScale * TileScale });
+		DrawTileDecal(TileModelPtr, mouse);
 
 		return true;
 	}
@@ -186,7 +192,7 @@ int main()
 #endif
 
 	RiichiClient demo;
-	if (demo.Construct(1280, 720, 1, 1, false, true))
+	if (demo.Construct(1280, 720, 1, 1, false, false))
 	{
 
 		demo.Start();
