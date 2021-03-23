@@ -35,19 +35,19 @@ private:
 		olc::Decal* Base, * Face;
 	};
 
-	typedef struct Tile
+	typedef struct TileModel
 	{
 		TileIndex ID;
 		TileImage Image;
 	};
 
-	Tile BlackTiles[39];
-	Tile RegularTiles[39];
+	TileModel BlackTiles[39];
+	TileModel RegularTiles[39];
 	
 	float TileScale;
 	int FrameCounter;
 
-	Tile* TilePtr;
+	TileModel* TilePtr;
 
 	void MakeTiles_PARALLELIZED()
 	{
@@ -116,7 +116,7 @@ public:
 	{
 		// Called once at the start, so create things here
 
-		TileScale = 1.0;
+		TileScale = 0.2;
 		FrameCounter = 15;
 
 		// MakeTiles_PROCEDURAL();
@@ -161,13 +161,18 @@ std::string RiichiClient::TILE_IMAGE_URL_BASE_FORMAT = "./%s/%s";
 
 int main()
 {
+#ifdef MAHJONG_DEBUG
+		ShowWindow(GetConsoleWindow(), 1);
+#else
+		ShowWindow(GetConsoleWindow(), 0);
+#endif
+
 	RiichiClient demo;
 	if (demo.Construct(1280, 720, 1, 1, false, true))
 	{
-#ifndef MAHJONG_DEBUG
-		ShowWindow(GetConsoleWindow(), 0);
-#endif
+
 		demo.Start();
+
 	}
 	return 0;
 }
