@@ -128,12 +128,12 @@ public:
 		// Called once at the start, so create things here
 
 		TileScale = 0.2;
+		FaceScale = 0.8;
 		FrameCounter = 15;
 
 		// MakeTiles_PROCEDURAL();
 		MakeTiles_PARALLEL();
 
-		FaceScale = 0.9;
 
 		return true;
 	}
@@ -152,12 +152,9 @@ public:
 
 		Clear(olc::VERY_DARK_BLUE);
 
-		float w, w0, w1, h, h0, h1, dw_center, dh_center;
-		w = TileModelPtr->Image.Face->sprite->width;
-		h = TileModelPtr->Image.Face->sprite->height;
-		w0 = w * TileScale; h0 = h * TileScale;
-		w1 = w0 * FaceScale; h1 = h0 * FaceScale;
-		dw_center = 0.5*(w0 - w1); dh_center = 0.5*(h0 - h1);
+		float dw_center, dh_center;
+		dw_center = 0.5 * TileModelPtr->Image.Face->sprite->width * TileScale * (1 - FaceScale);
+		dh_center = 0.5 * TileModelPtr->Image.Face->sprite->width * TileScale * (1 - FaceScale);
 
 		olc::vf2d mouse = { float(GetMouseX()), float(GetMouseY()) };
 		olc::vf2d tileOffset = { dw_center, dh_center };
