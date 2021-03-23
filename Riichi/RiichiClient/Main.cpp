@@ -41,16 +41,23 @@ private:
 		TileImage Image;
 	};
 
+	typedef struct Tile
+	{
+		TileModel* Model;
+		float Position[4];
+	};
+
+	// Contains all of the visual information for black and non-black tile images.
 	TileModel BlackTiles[39];
 	TileModel RegularTiles[39];
 	
+	// Variables that are just here for an example and will probably be removed between versions.
 	float TileScale;
 	int FrameCounter;
 
-	TileModel* TilePtr;
-
-	void MakeTiles_PARALLELIZED()
+	void MakeTiles_PARALLEL()
 	{
+		// 1. Determine filenames, make sprites, make decals from sprites for the bases.
 		static std::string BASE_BLACK_FILENAME = "./Black/Front.png";
 		static std::string BASE_REGULAR_FILENAME = "./Regular/Front.png";
 		static olc::Sprite* BASE_BLACK_SPRITE = new olc::Sprite(BASE_BLACK_FILENAME);
@@ -58,6 +65,7 @@ private:
 		static olc::Decal* BASE_BLACK_DECAL = new olc::Decal(BASE_BLACK_SPRITE);
 		static olc::Decal* BASE_REGULAR_DECAL = new olc::Decal(BASE_REGULAR_SPRITE);
 
+		// 2. Start determining file names.
 		static std::string BLACK_PATH = "./Black/";
 		static std::string REGULAR_PATH = "./Regular/";
 
@@ -67,8 +75,11 @@ private:
 		allstart = clock();
 #endif
 
-		// Figure out how to parallelize
-
+		// 4.
+		// For each unique tile face, load both the black and non-black variate images
+		//    and store them inside sprites that, anonymous, go into decals.
+		// Done in parallel because file I/O is extremely time-expensive and it takes
+		//    almost four times as long if I don't.
 #pragma omp parallel for
 		for (int i = 0; i < 38; i++)
 		{
@@ -98,8 +109,6 @@ private:
 		static std::string BLACK_PATH = "./Black/";
 		static std::string REGULAR_PATH = "./Regular/";
 
-		// Figure out how to parallelize
-
 		for (int i = 0; i < 38; i++)
 		{
 			BlackTiles[i].Image.Base = BASE_BLACK_DECAL;
@@ -120,29 +129,14 @@ public:
 		FrameCounter = 15;
 
 		// MakeTiles_PROCEDURAL();
-		MakeTiles_PARALLELIZED();
+		MakeTiles_PARALLEL();
 
 		return true;
 	}
 
 	bool OnUserUpdate(float fElapsedTime) override
 	{
-		int randIndex;
 
-		FrameCounter++;
-		while (FrameCounter >= 15)
-		{
-			FrameCounter -= 15;
-			randIndex = rand() % 74;
-			TilePtr = (randIndex & 1) ? &BlackTiles[randIndex >> 1] : &RegularTiles[randIndex >> 1];
-		}
-
-		Clear(olc::VERY_DARK_BLUE);
-
-		olc::vf2d mouse = { float(GetMouseX()), float(GetMouseY()) };
-
-		DrawDecal(mouse, TilePtr->Image.Base, { TileScale,TileScale });
-		DrawDecal(mouse, TilePtr->Image.Face, { TileScale,TileScale });
 
 		return true;
 	}
