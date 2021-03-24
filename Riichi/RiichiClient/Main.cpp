@@ -7,7 +7,7 @@
 
 // #define TIME_LOADING_IMAGES // Turn on to record and display times via stdout for testing image loading.
 
-// #define MAHJONG_DEBUG // Turn on to view debug messages sent via stdout.
+#define MAHJONG_DEBUG // Turn on to view debug messages sent via stdout.
 
 class RiichiClient : public olc::PixelGameEngine
 {
@@ -57,6 +57,7 @@ private:
 
 	int FrameCounter;
 	int RandIndex;
+	float TotalElapsedTime;
 	TileModel* TileModelPtr;
 
 	void MakeTiles_PARALLEL()
@@ -152,7 +153,7 @@ public:
 	{
 		// Called once at the start, so create things here
 
-		FrameCounter = 0;
+		TotalElapsedTime = 0.0f;
 
 		// MakeTiles_PROCEDURAL();
 		MakeTiles_PARALLEL();
@@ -165,15 +166,15 @@ public:
 
 	bool OnUserUpdate(float fElapsedTime) override
 	{
+		TotalElapsedTime += fElapsedTime;
+
 		Clear(olc::VERY_DARK_BLUE);
 		olc::vf2d mouse = { float(GetMouseX()), float(GetMouseY()) };
 		Tile ourTile;
 
-		FrameCounter++;
-
-		while (FrameCounter >= 60)
+		while (TotalElapsedTime >= 1.0f)
 		{
-			FrameCounter -= 60;
+			TotalElapsedTime -= 1.0f;
 			RandIndex = rand() % 37;
 			TileModelPtr = &RegularTiles[RandIndex >> 1];
 		}
