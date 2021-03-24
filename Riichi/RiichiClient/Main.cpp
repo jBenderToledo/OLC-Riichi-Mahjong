@@ -55,6 +55,7 @@ private:
 	float TileScale;
 	float FaceScale;
 	int FrameCounter;
+	int RandIndex;
 	TileModel* TileModelPtr;
 
 	void MakeTiles_PARALLEL()
@@ -127,7 +128,7 @@ private:
 
 		float dw_center, dh_center;
 		dw_center = 0.5 * DrawableTile->Image.Face->sprite->width * TileScale * (1 - FaceScale);
-		dh_center = 0.5 * DrawableTile->Image.Face->sprite->width * TileScale * (1 - FaceScale);
+		dh_center = 0.5 * DrawableTile->Image.Face->sprite->height * TileScale * (1 - FaceScale);
 		olc::vf2d tileOffset = { dw_center, dh_center };
 
 		DrawDecal(position + tileOffset, DrawableTile->Image.Face, { FaceScale * TileScale, FaceScale * TileScale });
@@ -146,21 +147,24 @@ public:
 		// MakeTiles_PROCEDURAL();
 		MakeTiles_PARALLEL();
 
+		FrameCounter -= 60;
+		RandIndex = rand() % 74;
+		TileModelPtr = (RandIndex & 1) ? &BlackTiles[RandIndex >> 1] : &RegularTiles[RandIndex >> 1];
 
 		return true;
 	}
 
 	bool OnUserUpdate(float fElapsedTime) override
 	{
-		int randIndex;
-
 		FrameCounter++;
-		while (FrameCounter >= 15)
+		while (FrameCounter >= 60)
 		{
-			FrameCounter -= 15;
-			randIndex = rand() % 74;
-			TileModelPtr = (randIndex & 1) ? &BlackTiles[randIndex >> 1] : &RegularTiles[randIndex >> 1];
+			FrameCounter -= 60;
+			RandIndex = rand() % 74;
+			TileModelPtr = (RandIndex & 1) ? &BlackTiles[RandIndex >> 1] : &RegularTiles[RandIndex >> 1];
 		}
+
+
 
 		Clear(olc::VERY_DARK_BLUE);
 
@@ -192,7 +196,7 @@ int main()
 #endif
 
 	RiichiClient demo;
-	if (demo.Construct(1280, 720, 1, 1, false, false))
+	if (demo.Construct(1280, 720, 1, 1, false, true))
 	{
 
 		demo.Start();
