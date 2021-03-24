@@ -44,7 +44,7 @@ private:
 	typedef struct Tile
 	{
 		TileModel* Model;
-		float Position[4];
+		olc::vf2d Position;
 	};
 
 	// Contains all of the visual information for black and non-black tile images.
@@ -54,9 +54,7 @@ private:
 	// Variables that are just here for an example and will probably be removed between versions.
 	static float TILE_SCALE;
 	static float FACE_SCALE;
-	static float FACE_SCALE_COMPLEMENT;
-	static float TILE_FACE_SCALE_PRODUCT;
-	static float DRAW_TILE_CENTER_OFFSET_RATIO;
+
 	int FrameCounter;
 	int RandIndex;
 	TileModel* TileModelPtr;
@@ -125,16 +123,27 @@ private:
 		}
 	}
 
-	void DrawTileDecal(TileModel* DrawableTile, olc::vf2d position)
+	void DrawTileDecal(Tile* DrawableTile, olc::vf2d Position)
 	{
-		DrawDecal(position, DrawableTile->Image.Base, { TILE_SCALE,TILE_SCALE });
+		static float FACE_SCALE_COMPLEMENT = 1 - FACE_SCALE;
+		static float TILE_FACE_SCALE_PRODUCT = TILE_SCALE * FACE_SCALE;
+		static float DRAW_TILE_CENTER_OFFSET_RATIO = 0.5 * TILE_SCALE * FACE_SCALE_COMPLEMENT;
 
 		float dw_center, dh_center;
-		dw_center = DrawableTile->Image.Face->sprite->width  * DRAW_TILE_CENTER_OFFSET_RATIO;
-		dh_center = DrawableTile->Image.Face->sprite->height * DRAW_TILE_CENTER_OFFSET_RATIO;
+		dw_center = DrawableTile->Model->Image.Face->sprite->width  * DRAW_TILE_CENTER_OFFSET_RATIO;
+		dh_center = DrawableTile->Model->Image.Face->sprite->height * DRAW_TILE_CENTER_OFFSET_RATIO;
 		olc::vf2d tileOffset = { dw_center, dh_center };
 
-		DrawDecal(position + tileOffset, DrawableTile->Image.Face, { TILE_FACE_SCALE_PRODUCT, TILE_FACE_SCALE_PRODUCT });
+		DrawDecal(
+			DrawableTile->Position,
+			DrawableTile->Model->Image.Base,
+			{ TILE_SCALE,TILE_SCALE }
+		);
+		DrawDecal(
+			DrawableTile->Position + tileOffset,
+			DrawableTile->Model->Image.Face, 
+			{ TILE_FACE_SCALE_PRODUCT, TILE_FACE_SCALE_PRODUCT }
+		);
 	}
 
 public:
@@ -158,6 +167,7 @@ public:
 	{
 		Clear(olc::VERY_DARK_BLUE);
 		olc::vf2d mouse = { float(GetMouseX()), float(GetMouseY()) };
+		Tile ourTile;
 
 		FrameCounter++;
 
@@ -168,7 +178,10 @@ public:
 			TileModelPtr = &RegularTiles[RandIndex >> 1];
 		}
 
-		DrawTileDecal(TileModelPtr, mouse);
+		ourTile.Position = mouse;
+		ourTile.Model = TileModelPtr;
+
+		DrawTileDecal(&ourTile, mouse);
 
 		return true;
 	}
@@ -186,9 +199,6 @@ std::string RiichiClient::TILE_FILENAME[38] = { // Source files are based on eas
 std::string RiichiClient::TILE_IMAGE_URL_BASE_FORMAT = "./%s/%s";
 float RiichiClient::TILE_SCALE = 0.15;
 float RiichiClient::FACE_SCALE = 0.85;
-float RiichiClient::FACE_SCALE_COMPLEMENT = 1 - FACE_SCALE;
-float RiichiClient::TILE_FACE_SCALE_PRODUCT = TILE_SCALE * FACE_SCALE;
-float RiichiClient::DRAW_TILE_CENTER_OFFSET_RATIO = 0.5 * TILE_SCALE * FACE_SCALE_COMPLEMENT;
 
 int main()
 {
@@ -199,7 +209,7 @@ int main()
 #endif
 
 	RiichiClient demo;
-	if (demo.Construct(1280, 720, 1, 1, false, false))
+	if (demo.Construct(1280, 720, 1, 1, false, true))
 	{
 
 		demo.Start();
