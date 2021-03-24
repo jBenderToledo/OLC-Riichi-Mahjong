@@ -52,8 +52,8 @@ private:
 	TileModel RegularTiles[39];
 	
 	// Variables that are just here for an example and will probably be removed between versions.
-	static float TILE_SCALE;
-	static float FACE_SCALE;
+	const float TILE_SCALE = 0.225;
+	const float FACE_SCALE = 0.85;
 
 	int FrameCounter;
 	int RandIndex;
@@ -126,9 +126,9 @@ private:
 
 	void DrawTileDecal(Tile* DrawableTile, olc::vf2d Position)
 	{
-		static float FACE_SCALE_COMPLEMENT = 1 - FACE_SCALE;
-		static float TILE_FACE_SCALE_PRODUCT = TILE_SCALE * FACE_SCALE;
-		static float DRAW_TILE_CENTER_OFFSET_RATIO = 0.5 * TILE_SCALE * FACE_SCALE_COMPLEMENT;
+		const float FACE_SCALE_COMPLEMENT = 1 - FACE_SCALE;
+		const float TILE_FACE_SCALE_PRODUCT = TILE_SCALE * FACE_SCALE;
+		const float DRAW_TILE_CENTER_OFFSET_RATIO = 0.5 * TILE_SCALE * FACE_SCALE_COMPLEMENT;
 
 		float dw_center, dh_center;
 		dw_center = DrawableTile->Model->Image.Face->sprite->width  * DRAW_TILE_CENTER_OFFSET_RATIO;
@@ -198,8 +198,6 @@ std::string RiichiClient::TILE_FILENAME[38] = { // Source files are based on eas
 };
 
 std::string RiichiClient::TILE_IMAGE_URL_BASE_FORMAT = "./%s/%s";
-float RiichiClient::TILE_SCALE = 0.15;
-float RiichiClient::FACE_SCALE = 0.85;
 
 int main()
 {
@@ -210,7 +208,7 @@ int main()
 #endif
 
 	RiichiClient demo;
-	if (demo.Construct(1280, 720, 1, 1, false, true))
+	if (demo.Construct(1920, 1080, 1, 1, false, true))
 	{
 
 		demo.Start();
