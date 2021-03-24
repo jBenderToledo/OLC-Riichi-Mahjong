@@ -52,8 +52,9 @@ private:
 	TileModel RegularTiles[39];
 	
 	// Variables that are just here for an example and will probably be removed between versions.
-	float TileScale;
-	float FaceScale;
+	static float TILE_SCALE;
+	static float FACE_SCALE;
+	static float TILE_FACE_SCALE_PRODUCT;
 	int FrameCounter;
 	int RandIndex;
 	TileModel* TileModelPtr;
@@ -124,14 +125,14 @@ private:
 
 	void DrawTileDecal(TileModel* DrawableTile, olc::vf2d position)
 	{
-		DrawDecal(position, DrawableTile->Image.Base, { TileScale,TileScale });
+		DrawDecal(position, DrawableTile->Image.Base, { TILE_SCALE,TILE_SCALE });
 
 		float dw_center, dh_center;
-		dw_center = 0.5 * DrawableTile->Image.Face->sprite->width * TileScale * (1 - FaceScale);
-		dh_center = 0.5 * DrawableTile->Image.Face->sprite->height * TileScale * (1 - FaceScale);
+		dw_center = 0.5 * DrawableTile->Image.Face->sprite->width * TILE_SCALE * (1 - FACE_SCALE);
+		dh_center = 0.5 * DrawableTile->Image.Face->sprite->height * TILE_SCALE * (1 - FACE_SCALE);
 		olc::vf2d tileOffset = { dw_center, dh_center };
 
-		DrawDecal(position + tileOffset, DrawableTile->Image.Face, { FaceScale * TileScale, FaceScale * TileScale });
+		DrawDecal(position + tileOffset, DrawableTile->Image.Face, { TILE_FACE_SCALE_PRODUCT, TILE_FACE_SCALE_PRODUCT });
 	}
 
 public:
@@ -140,35 +141,30 @@ public:
 	{
 		// Called once at the start, so create things here
 
-		TileScale = 0.2;
-		FaceScale = 0.8;
-		FrameCounter = 15;
+		FrameCounter = 0;
 
 		// MakeTiles_PROCEDURAL();
 		MakeTiles_PARALLEL();
 
-		FrameCounter -= 60;
-		RandIndex = rand() % 74;
-		TileModelPtr = (RandIndex & 1) ? &BlackTiles[RandIndex >> 1] : &RegularTiles[RandIndex >> 1];
+		RandIndex = rand() % 37;
+		TileModelPtr = &RegularTiles[RandIndex];
 
 		return true;
 	}
 
 	bool OnUserUpdate(float fElapsedTime) override
 	{
+		Clear(olc::VERY_DARK_BLUE);
+		olc::vf2d mouse = { float(GetMouseX()), float(GetMouseY()) };
+
 		FrameCounter++;
+
 		while (FrameCounter >= 60)
 		{
 			FrameCounter -= 60;
-			RandIndex = rand() % 74;
-			TileModelPtr = (RandIndex & 1) ? &BlackTiles[RandIndex >> 1] : &RegularTiles[RandIndex >> 1];
+			RandIndex = rand() % 37;
+			TileModelPtr = &RegularTiles[RandIndex >> 1];
 		}
-
-
-
-		Clear(olc::VERY_DARK_BLUE);
-
-		olc::vf2d mouse = { float(GetMouseX()), float(GetMouseY()) };
 
 		DrawTileDecal(TileModelPtr, mouse);
 
@@ -186,6 +182,9 @@ std::string RiichiClient::TILE_FILENAME[38] = { // Source files are based on eas
 };
 
 std::string RiichiClient::TILE_IMAGE_URL_BASE_FORMAT = "./%s/%s";
+float RiichiClient::TILE_SCALE = 0.15;
+float RiichiClient::FACE_SCALE = 0.8;
+float RiichiClient::TILE_FACE_SCALE_PRODUCT = TILE_SCALE * FACE_SCALE;
 
 int main()
 {
