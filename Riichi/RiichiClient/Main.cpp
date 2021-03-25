@@ -19,8 +19,22 @@ public:
 	}
 
 private:
-	static std::string TILE_IMAGE_URL_BASE_FORMAT;
-	static std::string TILE_FILENAME[38];
+	const float TILE_SCALE = 0.225;
+	const float FACE_SCALE = 0.875;
+
+	const float FACE_SCALE_COMPLEMENT = 1 - FACE_SCALE;
+	const float TILE_FACE_SCALE_PRODUCT = TILE_SCALE * FACE_SCALE;
+	const float DRAW_TILE_CENTER_OFFSET_RATIO = 0.5 * TILE_SCALE * FACE_SCALE_COMPLEMENT;
+	
+	const std::string TILE_IMAGE_URL_BASE_FORMAT = "./%s/%s";
+	const std::string TILE_FILENAME[38] = { // Source files are based on eastern names.
+		"Pin1.png", "Pin2.png", "Pin3.png", "Pin4.png", "Pin5.png", "Pin5-Dora.png", "Pin6.png", "Pin7.png", "Pin8.png", "Pin9.png",
+		"Sou1.png", "Sou2.png", "Sou3.png", "Sou4.png", "Sou5.png", "Sou5-Dora.png", "Sou6.png", "Sou7.png", "Sou8.png", "Sou9.png",
+		"Man1.png", "Man2.png", "Man3.png", "Man4.png", "Man5.png", "Man5-Dora.png", "Man6.png", "Man7.png", "Man8.png", "Man9.png",
+		"Ton.png", "Nan.png", "Shaa.png", "Pei.png", // East, south, west, north
+		"Chun.png", "Haku.png", "Hatsu.png",         // Red, white, green
+		"Blank.png"
+	};
 	static enum class TileIndex : int {
 		PIN_1 = 0, PIN_2, PIN_3, PIN_4, PIN_5, PIN_5_DORA, PIN_6, PIN_7, PIN_8, PIN_9,  // Suit: Dots, AKA pins.
 		SOU_1, SOU_2, SOU_3, SOU_4, SOU_5, SOU_5_DORA, SOU_6, SOU_7, SOU_8, SOU_9,		// Suit: Bamboo, AKA sou/souzu.
@@ -51,10 +65,8 @@ private:
 	TileModel BlackTiles[39];
 	TileModel RegularTiles[39];
 	
-	// Variables that are just here for an example and will probably be removed between versions.
-	const float TILE_SCALE = 0.225;
-	const float FACE_SCALE = 0.85;
 
+	// Variables that are just here for an example and will probably be removed between versions.
 	int FrameCounter;
 	int RandIndex;
 	float TotalElapsedTime;
@@ -126,14 +138,10 @@ private:
 
 	void DrawTileDecal(Tile* DrawableTile, olc::vf2d Position)
 	{
-		const float FACE_SCALE_COMPLEMENT = 1 - FACE_SCALE;
-		const float TILE_FACE_SCALE_PRODUCT = TILE_SCALE * FACE_SCALE;
-		const float DRAW_TILE_CENTER_OFFSET_RATIO = 0.5 * TILE_SCALE * FACE_SCALE_COMPLEMENT;
-
 		float dw_center, dh_center;
 		dw_center = DrawableTile->Model->Image.Face->sprite->width  * DRAW_TILE_CENTER_OFFSET_RATIO;
 		dh_center = DrawableTile->Model->Image.Face->sprite->height * DRAW_TILE_CENTER_OFFSET_RATIO;
-		olc::vf2d tileOffset = { dw_center, dh_center };
+		olc::vf2d tileCenteringOffset = { dw_center, dh_center };
 
 		DrawDecal(
 			DrawableTile->Position,
@@ -141,7 +149,7 @@ private:
 			{ TILE_SCALE,TILE_SCALE }
 		);
 		DrawDecal(
-			DrawableTile->Position + tileOffset,
+			DrawableTile->Position + tileCenteringOffset,
 			DrawableTile->Model->Image.Face, 
 			{ TILE_FACE_SCALE_PRODUCT, TILE_FACE_SCALE_PRODUCT }
 		);
@@ -187,17 +195,6 @@ public:
 		return true;
 	}
 };
-
-std::string RiichiClient::TILE_FILENAME[38] = { // Source files are based on eastern names.
-		"Pin1.png", "Pin2.png", "Pin3.png", "Pin4.png", "Pin5.png", "Pin5-Dora.png", "Pin6.png", "Pin7.png", "Pin8.png", "Pin9.png",
-		"Sou1.png", "Sou2.png", "Sou3.png", "Sou4.png", "Sou5.png", "Sou5-Dora.png", "Sou6.png", "Sou7.png", "Sou8.png", "Sou9.png",
-		"Man1.png", "Man2.png", "Man3.png", "Man4.png", "Man5.png", "Man5-Dora.png", "Man6.png", "Man7.png", "Man8.png", "Man9.png",
-		"Ton.png", "Nan.png", "Shaa.png", "Pei.png", // East, south, west, north
-		"Chun.png", "Haku.png", "Hatsu.png",         // Red, white, green
-		"Blank.png"
-};
-
-std::string RiichiClient::TILE_IMAGE_URL_BASE_FORMAT = "./%s/%s";
 
 int main()
 {
