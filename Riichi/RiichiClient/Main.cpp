@@ -19,12 +19,16 @@ public:
 	}
 
 private:
-	const float TILE_SCALE = 0.225;
+	const float TILE_SCALE = 90.0 / 600;
 	const float FACE_SCALE = 0.875;
 
 	const float FACE_SCALE_COMPLEMENT = 1 - FACE_SCALE;
 	const float TILE_FACE_SCALE_PRODUCT = TILE_SCALE * FACE_SCALE;
 	const float DRAW_TILE_CENTER_OFFSET_RATIO = 0.5 * TILE_SCALE * FACE_SCALE_COMPLEMENT;
+
+	const float HORIZONTAL_PADDING = 3;
+	const float DRAWN_TILE_PADDING = 30;
+	const float HAND_OFFSET = 200;
 	
 	const std::string TILE_IMAGE_URL_BASE_FORMAT = "./%s/%s";
 	const std::string TILE_FILENAME[38] = { // Source files are based on eastern names.
@@ -168,13 +172,28 @@ public:
 	{
 		// Called once at the start, so create things here
 
+		time_t cpuClock = clock();
+		srand(cpuClock ^ (cpuClock << 1) ^ (cpuClock >> 1));
+
 		TotalElapsedTime = 0.0f;
 
 		// MakeTiles_PROCEDURAL();
 		MakeTiles_PARALLEL();
 
-		RandIndex = rand() % 38;
-		TileModelPtr = &RegularTiles[RandIndex];
+		float w0 = RegularTiles[0].Image.Base->sprite->width * TILE_SCALE;
+		float h0 = RegularTiles[0].Image.Base->sprite->height * TILE_SCALE;
+
+#pragma omp parallel for
+		for (int i = 0; i < 14; i++)
+		{
+			MyHand[i].Model = &RegularTiles[rand() % 37];
+			MyHand[i].Position = {
+				HAND_OFFSET + i*(w0 + HORIZONTAL_PADDING),
+				ScreenHeight() - h0
+			};
+		}
+
+		MyHand[13].Position.x += DRAWN_TILE_PADDING;
 
 		return true;
 	}
@@ -184,20 +203,23 @@ public:
 		TotalElapsedTime += fElapsedTime;
 
 		Clear(olc::VERY_DARK_BLUE);
-		olc::vf2d mouse = { float(GetMouseX()), float(GetMouseY()) };
-		Tile ourTile;
 
-		while (TotalElapsedTime >= 1.0f)
+		while (TotalElapsedTime >= 0.5f)
 		{
-			TotalElapsedTime -= 1.0f;
-			RandIndex = rand() % 38;
-			TileModelPtr = &RegularTiles[RandIndex];
+			TotalElapsedTime -= 0.5f;
+
+#pragma omp parallel for
+			for (int i = 0; i < 14; i++)
+			{
+				MyHand[i].Model = &RegularTiles[rand() % 37];
+			}
 		}
 
-		ourTile.Position = mouse;
-		ourTile.Model = TileModelPtr;
-
-		DrawTileDecal(&ourTile, mouse);
+#pragma omp parallel for
+		for (int i = 0; i < 14; i++)
+		{
+			DrawTileDecal(&MyHand[i], MyHand[i].Position);
+		}
 
 		return true;
 	}
@@ -212,7 +234,7 @@ int main()
 #endif
 
 	RiichiClient demo;
-	if (demo.Construct(1920, 1080, 1, 1, false, false))
+	if (demo.Construct(1920, 1080, 1, 1, true, true))
 	{
 
 		demo.Start();
