@@ -64,8 +64,9 @@ private:
 	// Contains all of the visual information for black and non-black tile images.
 	TileModel BlackTiles[39];
 	TileModel RegularTiles[39];
-	
 
+	Tile MyHand[14];
+	
 	// Variables that are just here for an example and will probably be removed between versions.
 	int FrameCounter;
 	int RandIndex;
@@ -100,6 +101,9 @@ private:
 #pragma omp parallel for
 		for (int i = 0; i < 38; i++)
 		{
+			BlackTiles[i].ID = (TileIndex) i;
+			RegularTiles[i].ID = (TileIndex) i;
+
 			BlackTiles[i].Image.Base = BASE_BLACK_DECAL;
 			RegularTiles[i].Image.Base = BASE_REGULAR_DECAL;
 
@@ -138,21 +142,24 @@ private:
 
 	void DrawTileDecal(Tile* DrawableTile, olc::vf2d Position)
 	{
-		float dw_center, dh_center;
-		dw_center = DrawableTile->Model->Image.Face->sprite->width  * DRAW_TILE_CENTER_OFFSET_RATIO;
-		dh_center = DrawableTile->Model->Image.Face->sprite->height * DRAW_TILE_CENTER_OFFSET_RATIO;
-		olc::vf2d tileCenteringOffset = { dw_center, dh_center };
+		if (DrawableTile->Model->ID != TileIndex::BLANK)
+		{
+			float dw_center, dh_center;
+			dw_center = DrawableTile->Model->Image.Face->sprite->width * DRAW_TILE_CENTER_OFFSET_RATIO;
+			dh_center = DrawableTile->Model->Image.Face->sprite->height * DRAW_TILE_CENTER_OFFSET_RATIO;
+			olc::vf2d tileCenteringOffset = { dw_center, dh_center };
 
-		DrawDecal(
-			DrawableTile->Position,
-			DrawableTile->Model->Image.Base,
-			{ TILE_SCALE,TILE_SCALE }
-		);
-		DrawDecal(
-			DrawableTile->Position + tileCenteringOffset,
-			DrawableTile->Model->Image.Face, 
-			{ TILE_FACE_SCALE_PRODUCT, TILE_FACE_SCALE_PRODUCT }
-		);
+			DrawDecal(
+				DrawableTile->Position,
+				DrawableTile->Model->Image.Base,
+				{ TILE_SCALE,TILE_SCALE }
+			);
+			DrawDecal(
+				DrawableTile->Position + tileCenteringOffset,
+				DrawableTile->Model->Image.Face,
+				{ TILE_FACE_SCALE_PRODUCT, TILE_FACE_SCALE_PRODUCT }
+			);
+		}
 	}
 
 public:
@@ -166,7 +173,7 @@ public:
 		// MakeTiles_PROCEDURAL();
 		MakeTiles_PARALLEL();
 
-		RandIndex = rand() % 37;
+		RandIndex = rand() % 38;
 		TileModelPtr = &RegularTiles[RandIndex];
 
 		return true;
@@ -183,8 +190,8 @@ public:
 		while (TotalElapsedTime >= 1.0f)
 		{
 			TotalElapsedTime -= 1.0f;
-			RandIndex = rand() % 37;
-			TileModelPtr = &RegularTiles[RandIndex >> 1];
+			RandIndex = rand() % 38;
+			TileModelPtr = &RegularTiles[RandIndex];
 		}
 
 		ourTile.Position = mouse;
@@ -205,7 +212,7 @@ int main()
 #endif
 
 	RiichiClient demo;
-	if (demo.Construct(1920, 1080, 1, 1, false, true))
+	if (demo.Construct(1920, 1080, 1, 1, false, false))
 	{
 
 		demo.Start();
